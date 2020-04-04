@@ -51,16 +51,31 @@ int main(int argc, const char **argv)
         else
             osm_data = std::move(*data);
     }
-    
+
     // TODO 1: Declare floats `start_x`, `start_y`, `end_x`, and `end_y` and get
     // user input for these values using std::cin. Pass the user input to the
     // RoutePlanner object below in place of 10, 10, 90, 90.
 
+    float start_x, start_y, end_x, end_y;
+
+    std::cout << "Please provide start point: ";
+    std::cin >> start_x >> start_y;
+    std::cout << "Please provide end point: ";
+    std::cin >> end_x >> end_y;
+    std::cout << "Finding path from (" << start_x << "," << start_y
+              << ") to (" << end_x << "," << end_y << ")." << std::endl;
+
+    if ( 0.0 > float(start_x) || float(start_x) > 100.0 ||  0.0 > float(start_y) || float(start_y) > 100.0
+        || 0.0 > float(end_x) || float(end_x) > 100.0 || 0.0 > float(end_x) || float(end_x) > 100.0){
+        std::cout << "Invalid input values. Values must be in range between 0 to 100!" << std::endl;
+        return EXIT_FAILURE;
+    } 
+
     // Build Model.
     RouteModel model{osm_data};
 
-    // Create RoutePlanner object and perform A* search.
-    RoutePlanner route_planner{model, 10, 10, 90, 90};
+    // Create RoutePlanner object and perform A* search. Default: 10, 10, 90, 90
+    RoutePlanner route_planner{model, start_x, start_y, end_x, end_y};
     route_planner.AStarSearch();
 
     std::cout << "Distance: " << route_planner.GetDistance() << " meters. \n";
